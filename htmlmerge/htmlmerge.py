@@ -119,3 +119,9 @@ class html_merge:
         merged = self.merge_elements()
         combined = self.combine_elements_to_html(merged)
         return combined
+
+def main():
+    print('hello world')
+
+if __name__ == '__main__':
+    main()

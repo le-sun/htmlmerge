@@ -1,2 +1,1 @@
-def main():
-    import htmlmerge
+from .htmlmerge import html_merge
