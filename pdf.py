@@ -86,7 +86,7 @@ class html_merge:
                                 word = ''
 
                             new_span = self.good_soup.new_tag('span')
-                            new_span.attrs['style'] = 'width:{}px;display:inline-block;'.format(px_diff)
+                            new_span.attrs['style'] = 'width:{}px;display:inline-block;'.format(px_diff * self.multiplier_constant)
                             spans.append(new_span)
                         else:
                             current_letter = word_dict[current_key]
@@ -119,7 +119,3 @@ class html_merge:
         merged = self.merge_elements()
         combined = self.combine_elements_to_html(merged)
         return combined
-        
-f = open('outputorigin.html', 'rb').read()
-x = html_merge(f)
-print(x.run())
