@@ -1,4 +1,6 @@
 from bs4 import BeautifulSoup
+from collections import OrderedDict
+
 import re, html, math, json, lxml
 
 class html_merge:
@@ -11,7 +13,7 @@ class html_merge:
 
     def merge_elements(self):
         soup = self.good_soup.find('body')
-        span_dict = {}
+        span_dict = OrderedDict()
 
         # Span should probably be renamed to element
         # This iterates through everything in the body element - divs and spans
@@ -62,7 +64,7 @@ class html_merge:
                         # So having span as a dictionary of left pixel as the key and the letter as the value makes it
                         # easier to combine the words so that is is ordered. From "Fo ... Bao" without dictionary to "Foo Ba" with dictionary.
                         letter = span.string
-                        span.string = json.dumps({left_px: letter})
+                        span.string = json.dumps(OrderedDict({left_px: letter}))
                         span_dict[current_top_px] = span
                     else:
                         # If the current top pixel is already in the dictionary's key, then it should add on the the existing span
@@ -88,7 +90,7 @@ class html_merge:
 
     def combine_elements_to_html(self, span_dict):
         # There's probably a better way to turn everything back into an html element with bs4
-        finished_html = "<html>"
+        finished_html = ""
         # I should probably change span to element too.
         for span in span_dict.values():
             if span.name == 'div':
@@ -105,7 +107,7 @@ class html_merge:
                 # This div won't be added to the finished html until the next div appears, so all the spans that belong to that
                 # div can be nested.
                 new_div = self.good_soup.new_tag('div')
-                new_div.attrs['class'] = 'page'
+                new_div.attrs['class'] = 'paper'
             else:
                 # If the element is a span, then we want to combine all the letters in span.string's dictionary.
                 word_dict = json.loads(span.string)
@@ -191,7 +193,6 @@ class html_merge:
                     # inserted in the div, and then the cycle continues.
                     new_div.contents.append(span)
 
-        finished_html += "</html>"
         return finished_html
 
     def run(self):
