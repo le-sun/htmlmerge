@@ -108,6 +108,7 @@ class html_merge:
                 # div can be nested.
                 new_div = self.good_soup.new_tag('div')
                 new_div.attrs['class'] = 'paper'
+                new_div.attrs['style'] = 'position: relative; width: 100%; height: 100%;'
             else:
                 # If the element is a span, then we want to combine all the letters in span.string's dictionary.
                 word_dict = json.loads(span.string)
