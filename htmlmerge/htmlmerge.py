@@ -4,12 +4,23 @@ from collections import OrderedDict
 import re, html, math, json, lxml
 
 class html_merge:
-    def __init__(self, str_html):
+    def __init__(
+            self,
+            str_html,
+            div_class='paper',
+            div_style_attrs='position: relative; width: 100%; height: 100%;',
+            span_class='line',
+            span_style_attrs='width: inherit;'
+        ):
         # Sets up html and constants
         self.soup = BeautifulSoup(str_html, 'lxml')
         self.good_soup = html.unescape(self.soup)
         self.multiplier_constant = 1.2364
         self.banished_words = ('st', 'rd', 'th', 'nd')
+        self.div_class_name = div_class
+        self.div_style_attrs = div_style_attrs
+        self.span_class_name = span_class
+        self.span_style_attrs = span_style_attrs
 
     def merge_elements(self):
         soup = self.good_soup.find('body')
@@ -107,8 +118,8 @@ class html_merge:
                 # This div won't be added to the finished html until the next div appears, so all the spans that belong to that
                 # div can be nested.
                 new_div = self.good_soup.new_tag('div')
-                new_div.attrs['class'] = 'paper'
-                new_div.attrs['style'] = 'position: relative; width: 100%; height: 100%;'
+                new_div.attrs['class'] = self.div_class_name
+                new_div.attrs['style'] = self.div_style_attrs
             else:
                 # If the element is a span, then we want to combine all the letters in span.string's dictionary.
                 word_dict = json.loads(span.string)
@@ -184,9 +195,8 @@ class html_merge:
 
                 if height is None:
                     # This adds extra attributes to word containing spans for formatting.
-                    extra_attrs = 'width: inherit;'
-                    span['style'] += extra_attrs
-                    span.attrs['class'] = 'line'
+                    span['style'] += self.span_style_attrs
+                    span.attrs['class'] = self.span_class_name
 
                 if not(len(word) == 2 and word in self.banished_words):
                     # This is here as a hack to get rid of number suffixes (rd, st, th, nd) from 1^st, 2^nd, 3^rd, 4^th because
