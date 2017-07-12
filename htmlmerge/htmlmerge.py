@@ -184,7 +184,7 @@ class html_merge:
 
                 if height is None:
                     # This adds extra attributes to word containing spans for formatting.
-                    extra_attrs = 'white-space: pre; width: 100%;'
+                    extra_attrs = 'width: inherit;'
                     span['style'] += extra_attrs
                     span.attrs['class'] = 'line'
 
