@@ -11,7 +11,7 @@ class html_merge:
             div_style_attrs='position: relative; width: 100%; height: 100%;',
             span_class='line',
             span_style_attrs='width: inherit;',
-            span_border_style='border-bottom: 1px solid black'
+            span_border_style='border-bottom: 1px solid black;'
         ):
         # Sets up html and constants
         self.soup = BeautifulSoup(str_html, 'lxml')
@@ -57,7 +57,7 @@ class html_merge:
                     if not height_threshold:
                         # This detects if the current span is a border span (underlined) and changes the width so that it will
                         # align properly with the newly formatted text
-                        border = re.search('(border=?:)[^;]*', span['style']).group(0)
+                        border = re.search('(border=?:)[^;]*.', span['style']).group(0)
                         new_width = math.floor(int(width.group(0)) * self.multiplier_constant)
                         span['style'] = span['style'].replace(str(width.group(0)), str(new_width))
                         span['style'] = span['style'].replace(str(border), self.span_border_style)
